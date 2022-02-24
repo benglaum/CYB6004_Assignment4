@@ -13,7 +13,7 @@ SPACE=" "
 VERTICAL="|"
 
 #Downloads country information and stores it in a text file
-wget -q "https://stats.cybergreen.net/country" -O countryStats.txt
+#wget -q "https://stats.cybergreen.net/country" -O countryStats.txt
 
 #Runs the password check script.
 #./PasswordCheck.sh
