@@ -39,10 +39,21 @@ dataEditing() {
     sed -i '1d' $2
 }
 
+downloadingData() {
+    #Creating Text files for data Processing.
+    echo "Creating Text file 1" > countryStats.txt
+    echo "Creating Text file 2" > ProcessedCountryStats.txt
+    printf "Downloading please wait...." 
+
+    #Downloads country information and stores it in a text file
+    #wget -q "https://stats.cybergreen.net/country" -O countryStats.txt
+        
+    #function that does all the pre processing.
+    dataEditing countryStats.txt ProcessedCountryStats.txt
+}
+
 #Runs the password check script.
 #./PasswordCheck.sh
-
-
 
 #If the password is correct then the if statement is executed.
 if [ $? -eq 0 ]; then
@@ -51,7 +62,7 @@ if [ $? -eq 0 ]; then
 	while [ 1 ]; do
 
 	    #Displays the menu
-        printf "\n$B%s$N\n\n" "Main Menu"
+        printf "\n$B%s$N\n\n" "--------------------- Main Menu --------------------------"
         printf "$P%s$B%s$P%s$N\n\n" "Type " "'download'" " to download the lastest data."
         printf "$P%s$B%s$P%s$N\n\n" "Type " "'exit'" " to exit."
         printf "$P%s$N\n" "Type a number to investigate a Risk."
@@ -60,28 +71,21 @@ if [ $? -eq 0 ]; then
         printf "    $B%s$P%s$N\n" "3. " "Open SNMP"
         printf "    $B%s$P%s$N\n" "4. " "Open SSDP"
         printf "    $B%s$P%s$N\n" "5. " "Open Chargen"
-        printf "    $B%s$P%s$N\n\n" "6. " "DDOS"
-
+        printf "    $B%s$P%s$N\n" "6. " "DDOS"
+        printf "$B%s$N\n" "---------------------------------------------------------"  
         #Asks the user to select the option.
         read -p $'\e[34mEnter: \e[0m' selection
 
         case "$selection" in
 
-	    "1") printf "1\n" ;;
-	    "2") printf "2\n" ;;
-	    "3") printf "3\n" ;;
-	    "4") printf "4\n" ;;
-	    "5") printf "5\n" ;;
-	    "6") printf "6\n" ;;
+	    "1") ./OpenRecursiveDNS.sh ;;
+	    "2") ./OpenNTP.sh ;;
+	    "3") ./OpenSNMP.sh ;;
+	    "4") ./OpenSSDP.sh ;;
+	    "5") ./OpenChargen.sh ;;
+	    "6") ./DDOS.sh ;;
         "exit") exit ;;
-        "download")
-        printf "DOWNLOAD.." 
-        #Downloads country information and stores it in a text file
-        #wget -q "https://stats.cybergreen.net/country" -O countryStats.txt
-        
-        #function that does all the pre processing.
-        dataEdit countryStats.txt next.txt
-        ;;
+        "download") downloadingData ;;
         
         esac
             printf "$R%s$N\n" "Not a valid option"
