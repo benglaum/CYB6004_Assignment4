@@ -6,11 +6,17 @@ G="\033[32m"
 Y="\033[33m"
 B="\033[34m"
 P="\033[35m"
+C="\033[36m"
 N="\033[0m"
 
 #Variables
 SPACE=" "
 VERTICAL="|"
+BOLD="\e[1m"
+ITALIC="\e[3m"
+ULINE="\e[4m"
+NONE="\e[0m"
+PAD48="%+48s"
 
 sedFormating() {
     sed -i "s%$1%$2%g" $3
@@ -50,7 +56,29 @@ downloadingData() {
         
     #function that does all the pre processing.
     dataEditing countryStats.txt ProcessedCountryStats.txt
+
+    printf "Complete \n"
 }
+
+#function AWKRetreve(colour, ) {
+#    awk -F ";" '{ printf "$1%s$2\n" " }' ProcessedCountryStats.txt
+#}
+
+
+DisplayMenu() {
+
+	#Displays the menu
+    printf "\n$B%s$ULINE%s$NONE$N$B%s\n%s$PAD48\n" " __________________" "Main Menu" "____________________" "|" "|"
+    printf "$B%s$P%s$B%s$P%s$B%s\n" "| " "Type " "'download'" " to download the lastest data. " "|" 
+    printf "$B%s$P%s$B%s$P%s$B%s\n$B%s$PAD48\n%s" "| " "Type " "'exit'" " to exit." "                          |" "|" "|"
+    printf "$B%s$ULINE$P%s$NONE$B%s\n" "| " "Type a number to select a option" "              |"
+    printf "$B%s%s$P%s$B%s\n" "| " " 1. " "Compare Countries                         " "|"
+    printf "$B%s%s$P%s$B%s\n" "| " " 2. " "Compare Risk                              " "|"
+    printf "$B%s%s$P%s$B%s\n" "| " " 3. " "Search for indivdual country              " "|"
+    printf "$B%s%s$N\n\n" "|_" "______________________________________________|"  
+}
+
+clear
 
 #Runs the password check script.
 #./PasswordCheck.sh
@@ -58,37 +86,26 @@ downloadingData() {
 #If the password is correct then the if statement is executed.
 if [ $? -eq 0 ]; then
 
+    DisplayMenu
+
 	#Loop runs until user selects to exit.
 	while [ 1 ]; do
 
-	    #Displays the menu
-        printf "\n$B%s$N\n\n" "--------------------- Main Menu --------------------------"
-        printf "$P%s$B%s$P%s$N\n\n" "Type " "'download'" " to download the lastest data."
-        printf "$P%s$B%s$P%s$N\n\n" "Type " "'exit'" " to exit."
-        printf "$P%s$N\n" "Type a number to investigate a Risk."
-        printf "    $B%s$P%s$N \n" "1. " "Open Recursive DNS"
-        printf "    $B%s$P%s$N\n" "2. " "Open NTP"
-        printf "    $B%s$P%s$N\n" "3. " "Open SNMP"
-        printf "    $B%s$P%s$N\n" "4. " "Open SSDP"
-        printf "    $B%s$P%s$N\n" "5. " "Open Chargen"
-        printf "    $B%s$P%s$N\n" "6. " "DDOS"
-        printf "$B%s$N\n" "---------------------------------------------------------"  
         #Asks the user to select the option.
-        read -p $'\e[34mEnter: \e[0m' selection
+        read -p $'\e[3mEnter: \e[0m' selection
 
         case "$selection" in
 
-	    "1") ./OpenRecursiveDNS.sh ;;
-	    "2") ./OpenNTP.sh ;;
-	    "3") ./OpenSNMP.sh ;;
-	    "4") ./OpenSSDP.sh ;;
-	    "5") ./OpenChargen.sh ;;
-	    "6") ./DDOS.sh ;;
-        "exit") exit ;;
+	    '1') ./SearchCountry.sh; clear; DisplayMenu ;;
+	    '2') ./SearchRisk.sh; clear; DisplayMenu ;;
+	    '3') ./SearchRank.sh; clear; DisplayMenu ;;
+	    '4') ./CompareCountries.sh; clear; DisplayMenu ;;
+	    '5') ./OtherOne.sh; clear; DisplayMenu ;;
+        "exit") printf "$R%s\n" "Goodbye!"; exit ;;
         "download") downloadingData ;;
-        
+        *) printf "$R%s$N\n" "Not a valid option... Please select again" ;;
         esac
-            printf "$R%s$N\n" "Not a valid option"
+            
 	done
 
 else
