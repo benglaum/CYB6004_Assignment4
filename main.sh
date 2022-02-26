@@ -68,14 +68,14 @@ downloadingData() {
 DisplayMenu() {
 
 	#Displays the menu
-    printf "\n$B%s$ULINE%s$NONE$N$B%s\n%s$PAD48\n" " __________________" "Main Menu" "____________________" "|" "|"
-    printf "$B%s$P%s$B%s$P%s$B%s\n" "| " "Type " "'download'" " to download the lastest data. " "|" 
-    printf "$B%s$P%s$B%s$P%s$B%s\n$B%s$PAD48\n%s" "| " "Type " "'exit'" " to exit." "                          |" "|" "|"
-    printf "$B%s$ULINE$P%s$NONE$B%s\n" "| " "Type a number to select a option" "              |"
-    printf "$B%s%s$P%s$B%s\n" "| " " 1. " "Compare Countries                         " "|"
-    printf "$B%s%s$P%s$B%s\n" "| " " 2. " "Compare Risk                              " "|"
-    printf "$B%s%s$P%s$B%s\n" "| " " 3. " "Search for indivdual country              " "|"
-    printf "$B%s%s$N\n\n" "|_" "______________________________________________|"  
+    printf "$B%s\n" "Main Menu" 
+    printf "$B%s$N\n"  "---------------------------------------------------------------------------------"  
+    printf "$P%s$B%s$P%s\n\n" "  Type " "'download'" " to download the lastest data."
+    printf "$P%s$B%s$P%s\n\n"  "  Type " "'exit'" " to exit."     
+    printf "$P%s$B%s$P%s\n\n" "  Type" " '1' " "to compare countries on their amount of vunerable open devices."
+    printf "$P%s$B%s$P%s\n\n" "  Type" " '2' " "to compare risks resulting in large amounts of vunerable devices."
+    printf "$P%s$B%s$P%s\n" "  Type" " '3' " "to search for a country based on DDOS rank (risk to other countries)."
+    printf "$B%s$N\n\n"  "---------------------------------------------------------------------------------" 
 }
 
 clear
@@ -94,16 +94,20 @@ if [ $? -eq 0 ]; then
         #Asks the user to select the option.
         read -p $'\e[3mEnter: \e[0m' selection
 
+        item=$selection
+
         case "$selection" in
 
 	    '1') ./SearchCountry.sh; clear; DisplayMenu ;;
 	    '2') ./SearchRisk.sh; clear; DisplayMenu ;;
 	    '3') ./SearchRank.sh; clear; DisplayMenu ;;
-	    '4') ./CompareCountries.sh; clear; DisplayMenu ;;
-	    '5') ./OtherOne.sh; clear; DisplayMenu ;;
-        "exit") printf "$R%s\n" "Goodbye!"; exit ;;
+        "exit") printf "\n$R%s\n" "  Goodbye!"; exit ;;
         "download") downloadingData ;;
-        *) printf "$R%s$N\n" "Not a valid option... Please select again" ;;
+        *) 
+        clear
+        DisplayMenu
+        printf "$R%s$N\n\n" "  Error: '$item' is not a valid choice." 
+        ;;
         esac
             
 	done

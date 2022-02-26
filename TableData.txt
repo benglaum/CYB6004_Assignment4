@@ -1,0 +1,2 @@
+Australia;Count of Vulnerable Open Recursive DNS Devices;81;56,483;Count of Vulnerable Open NTP Devices;86;85,134;Count of Vulnerable Open SNMP Devices;75;7,033;Count of Vulnerable Open SSDP Devices;78;1,765;Count of Vulnerable Open CHARGEN Devices;63;58;GBit/sec;86;50;DDOS Rank;86;17
+South Africa;Count of Vulnerable Open Recursive DNS Devices;82;71,072;Count of Vulnerable Open NTP Devices;83;45,802;Count of Vulnerable Open SNMP Devices;82;17,773;Count of Vulnerable Open SSDP Devices;77;1,624;Count of Vulnerable Open CHARGEN Devices;64;64;GBit/sec;83;29;DDOS Rank;83;30

@@ -18,4 +18,7 @@ SearchRiskMenu
 
 read -p $'\e[3mEnter: \e[0m' selection
 
+    #sed -n '1p' file.txt > CountryLine.txt
+    #awk -F ";" '{print $1}' CountryLine.txt
+    #sedFormating ';' '\n' CountryLine.txt
 
