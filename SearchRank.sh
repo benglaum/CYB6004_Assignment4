@@ -22,6 +22,12 @@ sedFormating() {
     sed -i "s%$1%$2%g" $3
 }
 
+cleanUpTxtFiles() {
+    if [ -f $1 ]; then
+        rm $1
+    fi
+}
+
 SearchMenu() {
     printf "$BOLD$B%s$N$NONE\n"  "-------------------------------------------------------" 
     printf "%s$NONE%s$N\n"  "  " "Adding a country to the table:"
@@ -41,8 +47,6 @@ SearchMenu() {
     printf "$P%s$B%s$P%s\n" "  Type " "'back'" " to go back to the previous menu."
     printf "$BOLD$B%s$N$NONE\n"  "-------------------------------------------------------"
 }
-
-SearchMenu
 
 DisplayCountrysMessage() {
 
@@ -116,7 +120,7 @@ rankProcessing() {
         
         case "$selection" in
 
-            'view') ;;
+            'view')  clear; DisplayCountrysMessage; SearchMenu; ViewTable ;;
 
             'clear') echo -n > TableData.txt 
             clear; DisplayCountrysMessage; SearchRankMenu ;;
@@ -177,7 +181,7 @@ while [ 1 ]; do
         'clear') echo -n > TableData.txt 
         clear; DisplayCountrysMessage; SearchMenu ;;
 
-        'back') clear; exit ;;
+        'back') clear; break ;;
         '1') rankProcessing 3 'Vulnerable Open Recursive DNS Devices';;
         '2') rankProcessing 6 'Vulnerable Open NTP Devices';;
         '3') rankProcessing 9 'Vulnerable Open SNMP Devices';;
@@ -190,4 +194,7 @@ while [ 1 ]; do
         
     esac
 done
+cleanUpTxtFiles TableData.txt
+cleanUpTxtFiles CountryLine.txt
+cleanUpTxtFiles Processing.txt
 exit

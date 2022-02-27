@@ -22,6 +22,12 @@ sedFormating() {
     sed -i "s%$1%$2%g" $3
 }
 
+cleanUpTxtFiles() {
+    if [ -f $1 ]; then
+        rm $1
+    fi
+}
+
 dataEditing() {
     #Remove all the lines that don't contain the information.
     awk '(/data-place/ || /data-score/ || (/style=/ && /align=/)) {print $0}' $1 > $2
@@ -52,18 +58,13 @@ downloadingData() {
     printf "Downloading please wait...." 
 
     #Downloads country information and stores it in a text file
-    #wget -q "https://stats.cybergreen.net/country" -O countryStats.txt
+    wget -q "https://stats.cybergreen.net/country" -O countryStats.txt
         
     #function that does all the pre processing.
     dataEditing countryStats.txt ProcessedCountryStats.txt
 
     printf "Complete \n"
 }
-
-#function AWKRetreve(colour, ) {
-#    awk -F ";" '{ printf "$1%s$2\n" " }' ProcessedCountryStats.txt
-#}
-
 
 DisplayMenu() {
 
@@ -82,7 +83,7 @@ DisplayMenu() {
 clear
 
 #Runs the password check script.
-#./PasswordCheck.sh
+./PasswordCheck.sh
 
 #If the password is correct then the if statement is executed.
 if [ $? -eq 0 ]; then
@@ -99,10 +100,33 @@ if [ $? -eq 0 ]; then
 
         case "$selection" in
 
-	    '1') ./SearchCountry.sh; clear; DisplayMenu ;;
-	    '2') ./SearchRank.sh; clear; DisplayMenu ;;
-        "exit") printf "\n$R%s\n" "  Goodbye!"; exit ;;
+	    '1') 
+        if [ -f ProcessedCountryStats.txt ]; then
+            ./SearchCountry.sh; clear; DisplayMenu
+        else
+            clear
+            DisplayMenu
+            printf "$R%s$N\n\n" "  Error: '$item' is not a valid choice." 
+        fi
+        ;;
+
+	    '2') 
+        if [ -f ProcessedCountryStats.txt ]; then
+            ./SearchRank.sh; clear; DisplayMenu
+        else
+            clear
+            DisplayMenu
+            printf "$R%s$N\n\n" "  Error: No data. Please type 'download' to download the data." 
+        fi
+        ;;
+
+        "exit") printf "\n$R%s\n" "  Goodbye!"; 
+            cleanUpTxtFiles countryStats.txt
+            cleanUpTxtFiles ProcessedCountryStats.txt
+            exit ;;
+
         "download") downloadingData ;;
+
         *) 
         clear
         DisplayMenu
@@ -115,5 +139,3 @@ if [ $? -eq 0 ]; then
 else
 	exit
 fi
-
-

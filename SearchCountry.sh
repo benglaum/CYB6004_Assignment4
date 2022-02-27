@@ -54,6 +54,12 @@ UnderLine() {
 	printf "$string"
 }
 
+cleanUpTxtFiles() {
+    if [ -f $1 ]; then
+        rm $1
+    fi
+}
+
 #Function to print whole line for the table.
 WholeLine() {
 	printf "$1"
@@ -136,7 +142,7 @@ while [ 1 ]; do
         clear; DisplayCountrysMessage; SearchRiskMenu 
         ;;
 
-        'back') clear; exit ;;   
+        'back') clear; break ;;   
         
         #Adds a Country to the table
 	    *) clear; DisplayCountrysMessage; SearchRiskMenu
@@ -161,5 +167,10 @@ while [ 1 ]; do
         ;;
     esac           
 done
+
+cleanUpTxtFiles TableData.txt
+cleanUpTxtFiles CountryLine.txt
+cleanUpTxtFiles Processing.txt
+
 exit
 

@@ -1,5 +1,5 @@
 #!/bin/bash/Python3
-import sys
+#import sys
 
 risk_rank = [0,0]
 line = 0
