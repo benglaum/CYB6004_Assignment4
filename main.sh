@@ -68,14 +68,15 @@ downloadingData() {
 DisplayMenu() {
 
 	#Displays the menu
-    printf "$B%s\n" "Main Menu" 
-    printf "$B%s$N\n"  "---------------------------------------------------------------------------------"  
+    printf "$NONE%s\n" "Welcome to the program"
+    printf "$BOLD$B%s$NONE\n"  "-----------------------------------------------------------------------------------------"   
+    printf "$B%s\n" "  Main Menu" 
+    printf "$BOLD$B%s$NONE\n"  "  -----------------------------------------------------------------------------------"  
     printf "$P%s$B%s$P%s\n\n" "  Type " "'download'" " to download the lastest data."
     printf "$P%s$B%s$P%s\n\n"  "  Type " "'exit'" " to exit."     
-    printf "$P%s$B%s$P%s\n\n" "  Type" " '1' " "to compare countries on their amount of vunerable open devices."
-    printf "$P%s$B%s$P%s\n\n" "  Type" " '2' " "to compare risks resulting in large amounts of vunerable devices."
-    printf "$P%s$B%s$P%s\n" "  Type" " '3' " "to search for a country based on DDOS rank (risk to other countries)."
-    printf "$B%s$N\n\n"  "---------------------------------------------------------------------------------" 
+    printf "$P%s$B%s$P%s\n\n" "  Type" " '1' " "to compare different countries on their amount of vunerable open devices."
+    printf "$P%s$B%s$P%s\n" "  Type" " '2' " "to look up how different countries rank based on the type of risk."
+    printf "$BOLD$B%s$NONE\n\n"  "-----------------------------------------------------------------------------------------" 
 }
 
 clear
@@ -99,8 +100,7 @@ if [ $? -eq 0 ]; then
         case "$selection" in
 
 	    '1') ./SearchCountry.sh; clear; DisplayMenu ;;
-	    '2') ./SearchRisk.sh; clear; DisplayMenu ;;
-	    '3') ./SearchRank.sh; clear; DisplayMenu ;;
+	    '2') ./SearchRank.sh; clear; DisplayMenu ;;
         "exit") printf "\n$R%s\n" "  Goodbye!"; exit ;;
         "download") downloadingData ;;
         *) 

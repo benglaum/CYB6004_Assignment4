@@ -113,7 +113,14 @@ while [ 1 ]; do
     case "$selection" in
 
         #Adds a random Country to the table
-	    'random') ;;
+	    'random') 
+        number=$(shuf -i 0-50 -n1)
+        sed -n $number'p' ProcessedCountryStats.txt >> TableData.txt
+        clear
+        DisplayCountrysMessage
+        SearchRiskMenu
+        printf "  $G%s$N\n\n" " A random country was added to your table!"
+        ;;
 
         #View Table
 	    'view') clear; DisplayCountrysMessage; SearchRiskMenu
@@ -142,7 +149,7 @@ while [ 1 ]; do
             clear
             DisplayCountrysMessage
             SearchRiskMenu
-            printf "  $R$CountryName%s$N\n\n" " was added to your table!"
+            printf "  $G$CountryName%s$N\n\n" " was added to your table!"
             
         #if the file is empty
         else
