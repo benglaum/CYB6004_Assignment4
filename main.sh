@@ -9,7 +9,7 @@ P="\033[35m"
 C="\033[36m"
 N="\033[0m"
 
-#Variables
+#Symbols and text formats
 SPACE=" "
 VERTICAL="|"
 BOLD="\e[1m"
@@ -18,10 +18,12 @@ ULINE="\e[4m"
 NONE="\e[0m"
 PAD48="%+48s"
 
+#Sed function to replace text
 sedFormating() {
     sed -i "s%$1%$2%g" $3
 }
 
+#Checks to see if the file exits and then removes it
 cleanUpTxtFiles() {
     if [ -f $1 ]; then
         rm $1
@@ -51,6 +53,7 @@ dataEditing() {
     sed -i '1d' $2
 }
 
+#Download the data form the web page and preprocess it into a useful form
 downloadingData() {
     #Creating Text files for data Processing.
     echo "Creating Text file 1" > countryStats.txt
@@ -62,27 +65,34 @@ downloadingData() {
         
     #function that does all the pre processing.
     dataEditing countryStats.txt ProcessedCountryStats.txt
-
     printf "Complete \n"
 }
 
+#Displays the main menu 
 DisplayMenu() {
 
-	#Displays the menu
     printf "$NONE%s\n" "Welcome to the program"
+    
+    #Top Border and heading
     printf "$BOLD$B%s$NONE\n"  "-----------------------------------------------------------------------------------------"   
     printf "$B%s\n" "  Main Menu" 
-    printf "$BOLD$B%s$NONE\n"  "  -----------------------------------------------------------------------------------"  
+    printf "$BOLD$B%s$NONE\n"  "  -----------------------------------------------------------------------------------" 
+
+    #Menu options
     printf "$P%s$B%s$P%s\n\n" "  Type " "'download'" " to download the lastest data."
     printf "$P%s$B%s$P%s\n\n"  "  Type " "'exit'" " to exit."     
     printf "$P%s$B%s$P%s\n\n" "  Type" " '1' " "to compare different countries on their amount of vunerable open devices."
     printf "$P%s$B%s$P%s\n" "  Type" " '2' " "to look up how different countries rank based on the type of risk."
+
+    #Bottom Border
     printf "$BOLD$B%s$NONE\n\n"  "-----------------------------------------------------------------------------------------" 
 }
 
+
+#Main program Starts here
 clear
 
-#Runs the password check script.
+#Runs the password check script
 ./PasswordCheck.sh
 
 #If the password is correct then the if statement is executed.
@@ -94,48 +104,67 @@ if [ $? -eq 0 ]; then
 	while [ 1 ]; do
 
         #Asks the user to select the option.
-        read -p $'\e[3mEnter: \e[0m' selection
+        read -p $'\e[3mEnter: \e[0m' SELECTION
+        item=$SELECTION
 
-        item=$selection
-
-        case "$selection" in
+        case $SELECTION in
 
 	    '1') 
-        if [ -f ProcessedCountryStats.txt ]; then
-            ./SearchCountry.sh; clear; DisplayMenu
-        else
-            clear
-            DisplayMenu
-            printf "$R%s$N\n\n" "  Error: '$item' is not a valid choice." 
-        fi
-        ;;
+            #Check to see if the text file exits
+            if [ -f ProcessedCountryStats.txt ]; then
+                #Runs search country script
+                ./SearchCountry.sh
+                clear
+                DisplayMenu
+            
+            else
+                clear
+                DisplayMenu
+                #Prints error to download the data
+                printf "$R%s$N\n\n" "  Error: No data. Please type 'download' to download the data." 
+            fi
+            ;;
 
 	    '2') 
-        if [ -f ProcessedCountryStats.txt ]; then
-            ./SearchRank.sh; clear; DisplayMenu
-        else
-            clear
-            DisplayMenu
-            printf "$R%s$N\n\n" "  Error: No data. Please type 'download' to download the data." 
-        fi
-        ;;
+            #Check to see if the text file exits
+            if [ -f ProcessedCountryStats.txt ]; then
+                #Runs search rank script
+                ./SearchRank.sh
+                clear
+                DisplayMenu
 
-        "exit") printf "\n$R%s\n" "  Goodbye!"; 
+            else
+                clear
+                DisplayMenu
+                #Prints error to download the data
+                printf "$R%s$N\n\n" "  Error: No data. Please type 'download' to download the data." 
+            fi
+            ;;
+
+        "exit")
+            #Prints Goodbye messarge 
+            printf "\n$R%s\n" "  Goodbye!";
+            
+            #Deleates text files 
             cleanUpTxtFiles countryStats.txt
             cleanUpTxtFiles ProcessedCountryStats.txt
-            exit ;;
+            exit 
+            ;;
 
-        "download") downloadingData ;;
+        "download")
+            #Downloads the data and preprocesses it 
+            downloadingData 
+            ;;
 
+        #For all other options not above
         *) 
-        clear
-        DisplayMenu
-        printf "$R%s$N\n\n" "  Error: '$item' is not a valid choice." 
-        ;;
-        esac
-            
+            clear
+            DisplayMenu
+            #Prints not a valid choice
+            printf "$R%s$N\n\n" "  Error: '$item' is not a valid choice." 
+            ;;
+        esac    
 	done
-
 else
 	exit
 fi
